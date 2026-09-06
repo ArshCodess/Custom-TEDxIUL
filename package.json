@@ -1,0 +1,38 @@
+{
+  "name": "tedxiul",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@react-email/components": "^1.0.12",
+    "crypto": "^1.0.1",
+    "embla-carousel-react": "^8.6.0",
+    "html5-qrcode": "^2.3.8",
+    "mongodb": "^7.5.0",
+    "mongoose": "^9.9.2",
+    "next": "^15.0.0",
+    "qrcode": "^1.5.4",
+    "razorpay": "^2.9.8",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "react-hot-toast": "^2.6.0",
+    "resend": "^6.19.0",
+    "websocket": "^1.0.35"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@types/node": "20.17.6",
+    "@types/qrcode": "^1.5.6",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "eslint": "^10.3.0",
+    "globals": "^17.6.0",
+    "typescript": "5.8.2"
+  }
+}
