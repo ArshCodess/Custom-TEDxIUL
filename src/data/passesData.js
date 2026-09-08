@@ -4,7 +4,7 @@ export function getDiscountedPassPrice(price) {
   return Math.round(price * (1 - EARLY_BOOKING_DISCOUNT_PERCENT / 100));
 }
 
-export const PASSES_DATA = {
+export const OLD_PASSES_DATA = {
   general: {
     key: "general",
     id: "pass-general",
@@ -86,3 +86,22 @@ export const FACULTY_PASS = {
   noteTitle: "Eligibility",
   noteText: "Reserved for faculty members and VIP guests."
 }
+export const PASSES_DATA = [{
+  key: "faculty",
+  id: "pass-faculty",
+  name: "Faculty Pass",
+  price: 2599,
+  code: "FAC-SOT-2026",
+  deck: "VIP Access",
+  link: "..",
+  features: [
+    "Full auditorium access",
+    "All talks",
+    "VIP seating",
+    "TEDx kit",
+    "Meal + Refreshment",
+    "Meet & Greet with speakers"
+  ],
+  noteTitle: "Eligibility",
+  noteText: "Reserved for faculty members and VIP guests."
+}]

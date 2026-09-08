@@ -606,123 +606,126 @@ export default function RegisterPage() {
     setCachedUser(userData);
     localStorage.setItem('tedx_user_identity', JSON.stringify(userData));
     setIsModalOpen(false);
-    handlepay(activePass, userData);
+    // handlepay(activePass, userData);
+    window.open("https://rzp.io/rzp/lvZollBK", "_blank", "noopener,noreferrer");
+    setShowSuccessAnim(true)
+
   };
 
-  const handlepay = async (pass, userData) => {
-    setLoading(true);
-    try {
-      const response = await fetch("/api/create-order", {
-        method: "POST",
-        headers: { "Content-type": "application/json" },
-        body: JSON.stringify({
-          amount: getDiscountedPassPrice(pass.price) * 100,
-          email: userData.email || "",
-          passKey: pass.key,
-        }),
-      });
-      const data = await response.json().catch(() => ({}));
-      if (!response.ok) throw new Error(data.error || data.message || 'Unable to create your payment order.');
-      const { order, razorpayId } = data;
-      if (!order?.id || !razorpayId) throw new Error('Payment order was not created. Please try again.');
-      if (!window.Razorpay) throw new Error('Payment service is unavailable. Please refresh and try again.');
-      setorderId(order.id);
-      const paymentobj = new window.Razorpay({
-        key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
-        amount: getDiscountedPassPrice(pass.price) * 100,
-        currency: "INR",
-        name: EVENT.org,
-        description: `${pass.name} Registration`,
-        order_id: order.id,
-        handler: async function (response) {
-          const res = await fetch('/api/verify-payment', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              razorpay_order_id: response.razorpay_order_id,
-              razorpay_payment_id: response.razorpay_payment_id,
-              razorpay_signature: response.razorpay_signature,
-              razorpayId,
-              user: userData,
-              passTier: pass.key.replace('pass-', ''),
-              totalAmount: getDiscountedPassPrice(pass.price) * 100,
-            }),
-          });
+  // const handlepay = async (pass, userData) => {
+  //   setLoading(true);
+  //   try {
+  //     const response = await fetch("/api/create-order", {
+  //       method: "POST",
+  //       headers: { "Content-type": "application/json" },
+  //       body: JSON.stringify({
+  //         amount: getDiscountedPassPrice(pass.price) * 100,
+  //         email: userData.email || "",
+  //         passKey: pass.key,
+  //       }),
+  //     });
+  //     const data = await response.json().catch(() => ({}));
+  //     if (!response.ok) throw new Error(data.error || data.message || 'Unable to create your payment order.');
+  //     const { order, razorpayId } = data;
+  //     if (!order?.id || !razorpayId) throw new Error('Payment order was not created. Please try again.');
+  //     if (!window.Razorpay) throw new Error('Payment service is unavailable. Please refresh and try again.');
+  //     setorderId(order.id);
+  //     const paymentobj = new window.Razorpay({
+  //       key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
+  //       amount: getDiscountedPassPrice(pass.price) * 100,
+  //       currency: "INR",
+  //       name: EVENT.org,
+  //       description: `${pass.name} Registration`,
+  //       order_id: order.id,
+  //       handler: async function (response) {
+  //         const res = await fetch('/api/verify-payment', {
+  //           method: 'POST',
+  //           headers: { 'Content-Type': 'application/json' },
+  //           body: JSON.stringify({
+  //             razorpay_order_id: response.razorpay_order_id,
+  //             razorpay_payment_id: response.razorpay_payment_id,
+  //             razorpay_signature: response.razorpay_signature,
+  //             razorpayId,
+  //             user: userData,
+  //             passTier: pass.key.replace('pass-', ''),
+  //             totalAmount: getDiscountedPassPrice(pass.price) * 100,
+  //           }),
+  //         });
 
-          const result = await res.json().catch(() => ({}));
+  //         const result = await res.json().catch(() => ({}));
 
-          if (res.ok && result.success === true) {
-            const updatedPasses = { ...purchasedPasses, [pass.key]: true };
-            setPurchasedPasses(updatedPasses);
-            localStorage.setItem('tedx_purchased_passes', JSON.stringify(updatedPasses));
+  //         if (res.ok && result.success === true) {
+  //           const updatedPasses = { ...purchasedPasses, [pass.key]: true };
+  //           setPurchasedPasses(updatedPasses);
+  //           localStorage.setItem('tedx_purchased_passes', JSON.stringify(updatedPasses));
 
-            // Trigger Success Animation
-            setShowSuccessAnim(true);
-            setTimeout(() => setShowSuccessAnim(false), 5000);
-          } else {
-            setErrorMessage(result.error || result.message || 'Payment verification failed. Please contact support.');
-          }
-        },
-        modal: {
-          ondismiss: async () => {
-            setErrorMessage('Payment was cancelled. You can try again whenever you are ready.')
-            try {
-              const res = await fetch("/api/verify-payment/failure",
-                {
-                  method: "POST",
-                  headers: { 'Content-Type': 'application/json' },
-                  body: JSON.stringify({
-                    failureReason: "Modal Closed by User",
-                    order_id: orderId,
-                  })
-                }
-              )
-              if (!res.ok) {
-                console.error("Failed to sync failure status with backend server.");
-              }
-            } catch (apiError) {
-              console.error("Network error while reporting payment failure:", apiError);
-            }
-          },
-        },
-        notes: {
-          pass: pass.name,
-        },
-        prefill: {
-          name: userData?.name || "Attendee",
-          email: userData?.email || "attendee@example.com",
-        },
-        theme: { color: "#EB0028" },
-      });
-      paymentobj.on('payment.failed', async (failure) => {
-        // setErrorMessage(failure?.error?.description || 'Payment failed. Please try again.');
-        try {
-          const res = await fetch("/api/verify-payment/failure",
-            {
-              method: "POST",
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({
-                failureReason: failure?.error?.description,
-                order_id: failure?.error?.metadata?.order_id || orderId,
-              })
-            }
-          )
-          if (!res.ok) {
-            console.error("Failed to sync failure status with backend server.");
-          }
-        } catch (apiError) {
-          console.error("Network error while reporting payment failure:", apiError);
-        }
+  //           // Trigger Success Animation
+  //           setShowSuccessAnim(true);
+  //           setTimeout(() => setShowSuccessAnim(false), 5000);
+  //         } else {
+  //           setErrorMessage(result.error || result.message || 'Payment verification failed. Please contact support.');
+  //         }
+  //       },
+  //       modal: {
+  //         ondismiss: async () => {
+  //           setErrorMessage('Payment was cancelled. You can try again whenever you are ready.')
+  //           try {
+  //             const res = await fetch("/api/verify-payment/failure",
+  //               {
+  //                 method: "POST",
+  //                 headers: { 'Content-Type': 'application/json' },
+  //                 body: JSON.stringify({
+  //                   failureReason: "Modal Closed by User",
+  //                   order_id: orderId,
+  //                 })
+  //               }
+  //             )
+  //             if (!res.ok) {
+  //               console.error("Failed to sync failure status with backend server.");
+  //             }
+  //           } catch (apiError) {
+  //             console.error("Network error while reporting payment failure:", apiError);
+  //           }
+  //         },
+  //       },
+  //       notes: {
+  //         pass: pass.name,
+  //       },
+  //       prefill: {
+  //         name: userData?.name || "Attendee",
+  //         email: userData?.email || "attendee@example.com",
+  //       },
+  //       theme: { color: "#EB0028" },
+  //     });
+  //     paymentobj.on('payment.failed', async (failure) => {
+  //       // setErrorMessage(failure?.error?.description || 'Payment failed. Please try again.');
+  //       try {
+  //         const res = await fetch("/api/verify-payment/failure",
+  //           {
+  //             method: "POST",
+  //             headers: { 'Content-Type': 'application/json' },
+  //             body: JSON.stringify({
+  //               failureReason: failure?.error?.description,
+  //               order_id: failure?.error?.metadata?.order_id || orderId,
+  //             })
+  //           }
+  //         )
+  //         if (!res.ok) {
+  //           console.error("Failed to sync failure status with backend server.");
+  //         }
+  //       } catch (apiError) {
+  //         console.error("Network error while reporting payment failure:", apiError);
+  //       }
 
-      });
-      paymentobj.open();
-    } catch (error) {
-      console.error(error);
-      setErrorMessage(error.message || 'Unable to start payment. Please try again.');
-    } finally {
-      setLoading(false);
-    }
-  };
+  //     });
+  //     paymentobj.open();
+  //   } catch (error) {
+  //     console.error(error);
+  //     setErrorMessage(error.message || 'Unable to start payment. Please try again.');
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
 
   // Hardware a11y & scanner override sequence
   useEffect(() => {
@@ -772,10 +775,16 @@ export default function RegisterPage() {
         <div className="tedx-success-overlay">
           <div className="tedx-success-modal">
             <div className="tedx-success-icon">✓</div>
+            <h2>Pass Registration may be Confirmed!</h2>
+            <p>If you have paid for the ticket you will receive the ticket after 18 Sept on you registered email</p>
+            <div className="tedx-confetti-emitter" />
+          </div>
+          {/* <div className="tedx-success-modal">
+            <div className="tedx-success-icon">✓</div>
             <h2>Pass Registration Confirmed!</h2>
             <p>Your identity has been linked to the pass and stored successfully.Check your Email for ticket</p>
             <div className="tedx-confetti-emitter" />
-          </div>
+          </div> */}
         </div>
       )}
       {/* VERIFICATION POPUP MODAL */}
