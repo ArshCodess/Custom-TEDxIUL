@@ -1,43 +1,43 @@
 import './Tickets.css';
 
 const ticketTiers = [
-  {
-    key: 'general',
-    name: 'General',
-    price: '₹799',
-    discountedPrice: '₹679',
-    description: 'Perfect for first-time attendees',
-    features: ['Full Auditorium Access', 'All Talks', 'Back Seating', 'Refreshments', 'Key Rings'],
-    featured: false,
-  },
-  {
-    key: 'gold',
-    name: 'Gold',
-    price: '₹1,699',
-    discountedPrice: '₹1,444',
-    description: 'Enjoy a premium experience with added comfort',
-    features: ['Full Auditorium Access', 'All Talks', 'Middle Seating', 'Diary & Pen', 'Meal & Refreshments'],
-    featured: true,
-    tag: 'Most Popular',
-  },
-  {
-    key: 'platinum',
-    name: 'Platinum',
-    price: '₹2,099',
-    discountedPrice: '₹1,784',
-    description: 'The ultimate experience for premium attendees',
-    features: ['Full Auditorium Access', 'All Talks', 'Front-Row Seating', 'TEDx Kit', 'Meal & Refreshments', 'Meet & Greet with Speakers'],
-    featured: false,
-  },
   // {
-  //   key: 'faculty',
-  //   name: 'Faculty',
-  //   price: '₹2,599',
-  //   discountedPrice: '₹2,209',
-  //   description: 'An exclusive experience for faculty members',
-  //   features: ['Full Auditorium Access', 'All Talks', 'VIP Seating', 'TEDx Kit', 'Meal & Refreshment', 'Meet & Greet with Speakers'],
+  //   key: 'general',
+  //   name: 'General',
+  //   price: '₹799',
+  //   discountedPrice: '₹679',
+  //   description: 'Perfect for first-time attendees',
+  //   features: ['Full Auditorium Access', 'All Talks', 'Back Seating', 'Refreshments', 'Key Rings'],
   //   featured: false,
   // },
+  // {
+  //   key: 'gold',
+  //   name: 'Gold',
+  //   price: '₹1,699',
+  //   discountedPrice: '₹1,444',
+  //   description: 'Enjoy a premium experience with added comfort',
+  //   features: ['Full Auditorium Access', 'All Talks', 'Middle Seating', 'Diary & Pen', 'Meal & Refreshments'],
+  //   featured: true,
+  //   tag: 'Most Popular',
+  // },
+  // {
+  //   key: 'platinum',
+  //   name: 'Platinum',
+  //   price: '₹2,099',
+  //   discountedPrice: '₹1,784',
+  //   description: 'The ultimate experience for premium attendees',
+  //   features: ['Full Auditorium Access', 'All Talks', 'Front-Row Seating', 'TEDx Kit', 'Meal & Refreshments', 'Meet & Greet with Speakers'],
+  //   featured: false,
+  // },
+  {
+    key: 'faculty',
+    name: 'Faculty',
+    price: '₹2,599',
+    discountedPrice: '₹2,209',
+    description: 'An exclusive experience for faculty members',
+    features: ['Full Auditorium Access', 'All Talks', 'VIP Seating', 'TEDx Kit', 'Meal & Refreshment', 'Meet & Greet with Speakers'],
+    featured: false,
+  },
 ];
 
 export default function Tickets() {
@@ -47,9 +47,9 @@ export default function Tickets() {
       <h2 className="section-title fade-in">EVENT <span className="accent">TICKETS</span></h2>
       <p className="tickets-sub fade-in">Choose the pass that fits your experience</p>
       <div className="ticket-offer fade-in">
-        <span className="ticket-offer-badge">15% OFF</span>
+        <span className="ticket-offer-badge">20% OFF</span>
         <div>
-          <strong>Order before 15 September</strong>
+          <strong>Order before 20 September</strong>
           <span>and unlock your early-bird ticket price.</span>
         </div>
       </div>
@@ -60,7 +60,7 @@ export default function Tickets() {
             <div className="ticket-header">
               <div className="ticket-title-row">
                 <div className="ticket-type">{ticket.name}</div>
-                <span className="ticket-discount">-15%</span>
+                <span className="ticket-discount">-20%</span>
               </div>
               <div className="ticket-price">{ticket.discountedPrice}</div>
               <div className="ticket-original-price">Regularly {ticket.price}</div>

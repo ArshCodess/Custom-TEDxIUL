@@ -608,7 +608,7 @@ export default function RegisterPage() {
     setIsModalOpen(false);
     // handlepay(activePass, userData);
     window.open("https://rzp.io/rzp/lvZollBK", "_blank", "noopener,noreferrer");
-    setShowSuccessAnim(true)
+    setShowSuccessAnim(true) 
 
   };
 
@@ -805,7 +805,7 @@ export default function RegisterPage() {
         <p className="page-hero-sub">
           Choose your pass and secure your seat for the TEDxIntegralUniversity experience.
         </p>
-        <h2 className="early-booking-heading">Get {EARLY_BOOKING_DISCOUNT_PERCENT}% discount if you book your ticket before 15 September</h2>
+        <h2 className="early-booking-heading">Get {EARLY_BOOKING_DISCOUNT_PERCENT}% discount if you book your ticket before 20 September</h2>
       </div>
 
       <div className="tedx-store-root">
@@ -853,7 +853,7 @@ export default function RegisterPage() {
             <h2 className="tedx-title">
               <span onPointerDown={handleSyncRef} style={{ cursor: syncCtx > 0 ? 'default' : 'auto' }}>Secure</span> Your Seat.
             </h2>
-            <div className="page-hero-label" style={{ animation: "bounce" }}>Active discount 15%</div>
+            <div className="page-hero-label" style={{ animation: "bounce" }}>Active discount 20%</div>
             <h2 className="tedx-subtitle">
               <span onPointerDown={handleSyncRef} style={{ cursor: syncCtx > 0 ? 'default' : 'auto', marginTop: "4px" }}> &#40; Participation Certificate</span> For ALL &#41;
             </h2>

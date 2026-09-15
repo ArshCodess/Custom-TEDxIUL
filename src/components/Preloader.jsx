@@ -3,7 +3,7 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react';
 import logo from '../assets/tedx-logo-clean.svg';
 
-const DURATION = 5000;
+const DURATION = 3000;
 
 export default function Preloader({ onVideoEnd, duration = DURATION }) {
     const canvasRef = useRef(null);

@@ -1,4 +1,4 @@
-export const EARLY_BOOKING_DISCOUNT_PERCENT = 15;
+export const EARLY_BOOKING_DISCOUNT_PERCENT = 20;
 
 export function getDiscountedPassPrice(price) {
   return Math.round(price * (1 - EARLY_BOOKING_DISCOUNT_PERCENT / 100));
